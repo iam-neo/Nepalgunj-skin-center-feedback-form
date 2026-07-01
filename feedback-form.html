@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Feedback — Nepalgunj Skin Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FAF5EF;
+      --card: #FFFFFF;
+      --ink: #33261F;
+      --ink-soft: #6E5D52;
+      --gold: #B9905B;
+      --gold-deep: #96713F;
+      --rose: #C48B72;
+      --line: #EAE0D4;
+      --good: #2E7D5B;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 15% 0%, #FFF9F2 0%, transparent 45%),
+        var(--cream);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      padding: 40px 16px 80px;
+    }
+
+    .wrap {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .brandmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .brandmark .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .brandmark span {
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 34px;
+      line-height: 1.15;
+      margin: 0 0 8px;
+      color: var(--ink);
+    }
+
+    .sub {
+      color: var(--ink-soft);
+      font-size: 15px;
+      margin: 0 0 32px;
+      max-width: 44ch;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 40px -28px rgba(60, 40, 20, .35);
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--ink);
+      margin-bottom: 7px;
+    }
+
+    input[type=text],
+    input[type=tel],
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      background: #FFFDFB;
+      color: var(--ink);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(185, 144, 91, .18);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width:480px) {
+      .row2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 26px 0;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: 19px;
+      font-weight: 600;
+      margin: 0 0 18px;
+    }
+
+    /* Star rating */
+    .stars {
+      display: flex;
+      gap: 6px;
+    }
+
+    .star {
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      fill: none;
+      stroke: var(--gold-deep);
+      stroke-width: 1.6;
+      transition: transform .12s ease, fill .12s ease;
+    }
+
+    .star:hover {
+      transform: scale(1.08);
+    }
+
+    .star.filled {
+      fill: var(--gold);
+      stroke: var(--gold-deep);
+    }
+
+    .rate-caption {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--ink-soft);
+      min-height: 16px;
+    }
+
+    /* Choice pills */
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 9px 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      cursor: pointer;
+      user-select: none;
+      background: #FFFDFB;
+      transition: all .15s ease;
+    }
+
+    .pill input {
+      display: none;
+    }
+
+    .pill.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .required-mark {
+      color: var(--rose);
+    }
+
+    button.submit {
+      width: 100%;
+      margin-top: 30px;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: var(--ink);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      cursor: pointer;
+      transition: background .15s ease, transform .1s ease;
+    }
+
+    button.submit:hover {
+      background: var(--gold-deep);
+    }
+
+    button.submit:active {
+      transform: translateY(1px);
+    }
+
+    button.submit:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.ok {
+      color: var(--good);
+    }
+
+    .status.err {
+      color: #B23A3A;
+    }
+
+    .success-view {
+      display: none;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .success-view.show {
+      display: block;
+    }
+
+    .success-view .check {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: #EAF4EE;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success-view h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      margin: 0 0 8px;
+    }
+
+    .success-view p {
+      color: var(--ink-soft);
+      font-size: 14px;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="brandmark"><span class="dot"></span><span>Nepalgunj Skin Center</span></div>
+
+    <div id="formView">
+      <h1>How was your visit?</h1>
+      <p class="sub">Your feedback helps us improve care for every patient who walks through our door.</p>
+
+      <div class="card">
+        <form id="feedbackForm" novalidate>
+
+          <div class="field">
+            <label>Name <span class="required-mark">*</span></label>
+            <input type="text" name="name" required>
+          </div>
+
+          <div class="field">
+            <label>Address</label>
+            <input type="text" name="address">
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label>Age / Sex</label>
+              <input type="text" name="ageSex" placeholder="e.g. 28 / F">
+            </div>
+            <div class="field">
+              <label>Contact</label>
+              <input type="tel" name="contact" placeholder="98XXXXXXXX">
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label>Treatment done</label>
+              <input type="text" name="treatment">
+            </div>
+            <div class="field">
+              <label>Treatment done by</label>
+              <input type="text" name="treatedBy">
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="field">
+            <label>Rate us <span class="required-mark">*</span></label>
+            <div class="stars" id="starRow"></div>
+            <div class="rate-caption" id="rateCaption"></div>
+            <input type="hidden" name="rating" id="ratingInput" required>
+          </div>
+
+          <div class="field">
+            <label>Feedback / complaints</label>
+            <textarea name="feedbackText" placeholder="Tell us anything on your mind..."></textarea>
+          </div>
+
+          <hr class="divider">
+          <p class="section-title">A few quick questions</p>
+
+          <div class="field">
+            <label>1. Satisfaction</label>
+            <div class="choice-group" data-name="satisfaction">
+              <label class="pill"><input type="radio" name="satisfaction"
+                  value="Dissatisfied"><span>Dissatisfied</span></label>
+              <label class="pill"><input type="radio" name="satisfaction"
+                  value="Satisfied"><span>Satisfied</span></label>
+              <label class="pill"><input type="radio" name="satisfaction" value="Very satisfied"><span>Very
+                  satisfied</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>2. Pain</label>
+            <div class="choice-group" data-name="pain">
+              <label class="pill"><input type="radio" name="pain" value="None"><span>None</span></label>
+              <label class="pill"><input type="radio" name="pain" value="Mild"><span>Mild</span></label>
+              <label class="pill"><input type="radio" name="pain" value="Moderate"><span>Moderate</span></label>
+              <label class="pill"><input type="radio" name="pain" value="Severe"><span>Severe</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>3. Staff behavior</label>
+            <div class="choice-group" data-name="staffBehavior">
+              <label class="pill"><input type="radio" name="staffBehavior" value="Poor"><span>Poor</span></label>
+              <label class="pill"><input type="radio" name="staffBehavior" value="Average"><span>Average</span></label>
+              <label class="pill"><input type="radio" name="staffBehavior" value="Good"><span>Good</span></label>
+              <label class="pill"><input type="radio" name="staffBehavior"
+                  value="Excellent"><span>Excellent</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>4. Cleanliness</label>
+            <div class="choice-group" data-name="cleanliness">
+              <label class="pill"><input type="radio" name="cleanliness" value="Poor"><span>Poor</span></label>
+              <label class="pill"><input type="radio" name="cleanliness" value="Average"><span>Average</span></label>
+              <label class="pill"><input type="radio" name="cleanliness" value="Good"><span>Good</span></label>
+              <label class="pill"><input type="radio" name="cleanliness"
+                  value="Excellent"><span>Excellent</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>5. Waiting time</label>
+            <div class="choice-group" data-name="waitingTime">
+              <label class="pill"><input type="radio" name="waitingTime" value="Short"><span>Short</span></label>
+              <label class="pill"><input type="radio" name="waitingTime" value="Moderate"><span>Moderate</span></label>
+              <label class="pill"><input type="radio" name="waitingTime" value="Long"><span>Long</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>6. Suggestions</label>
+            <textarea name="suggestion" placeholder="Anything we could do better?"></textarea>
+          </div>
+
+          <button type="submit" class="submit" id="submitBtn">Submit feedback</button>
+          <div class="status" id="statusMsg"></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="success-view" id="successView">
+      <div class="check">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2>Thank you</h2>
+      <p>Your feedback has been received. We appreciate you taking the time.</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ⚠️ Replace this with your deployed Google Apps Script Web App URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxm3GwUimL6M2rfpNh8wz0B2HYKoyY_2xDNWP672P7s84vEsc8RBPt-9Fu51l7lirhTuw/exec";
+
+    // Star rating
+    const starRow = document.getElementById('starRow');
+    const ratingInput = document.getElementById('ratingInput');
+    const rateCaption = document.getElementById('rateCaption');
+    const captions = { 1: "Poor", 2: "Fair", 3: "Good", 4: "Very good", 5: "Excellent" };
+    let currentRating = 0;
+
+    for (let i = 1; i <= 5; i++) {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.classList.add("star");
+      svg.dataset.value = i;
+      svg.innerHTML = '<polygon points="12 2 15.09 8.63 22 9.24 16.5 13.97 18.18 20.9 12 17.27 5.82 20.9 7.5 13.97 2 9.24 8.91 8.63 12 2"></polygon>';
+      svg.addEventListener('click', () => setRating(i));
+      starRow.appendChild(svg);
+    }
+
+    function setRating(val) {
+      currentRating = val;
+      ratingInput.value = val;
+      [...starRow.children].forEach((s, idx) => {
+        s.classList.toggle('filled', idx < val);
+      });
+      rateCaption.textContent = captions[val] + " (" + val + "/5)";
+    }
+
+    // Pill toggle behavior
+    document.querySelectorAll('.choice-group').forEach(group => {
+      group.querySelectorAll('.pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          group.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+        });
+      });
+    });
+
+    // Submit
+    const form = document.getElementById('feedbackForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!form.name.value.trim()) {
+        showStatus("Please enter your name.", false);
+        return;
+      }
+      if (!currentRating) {
+        showStatus("Please give a star rating.", false);
+        return;
+      }
+
+      const data = {
+        name: form.name.value.trim(),
+        address: form.address.value.trim(),
+        ageSex: form.ageSex.value.trim(),
+        contact: form.contact.value.trim(),
+        treatment: form.treatment.value.trim(),
+        treatedBy: form.treatedBy.value.trim(),
+        rating: currentRating,
+        feedbackText: form.feedbackText.value.trim(),
+        satisfaction: getRadio('satisfaction'),
+        pain: getRadio('pain'),
+        staffBehavior: getRadio('staffBehavior'),
+        cleanliness: getRadio('cleanliness'),
+        waitingTime: getRadio('waitingTime'),
+        suggestion: form.suggestion.value.trim(),
+        submittedAt: new Date().toISOString()
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors", // Apps Script web apps don't return CORS headers
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(data)
+        });
+        // no-cors means we can't read the response, so we optimistically assume success
+        document.getElementById('formView').style.display = "none";
+        document.getElementById('successView').classList.add('show');
+      } catch (err) {
+        showStatus("Something went wrong. Please try again.", false);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit feedback";
+      }
+    });
+
+    function getRadio(name) {
+      const el = form.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : "";
+    }
+
+    function showStatus(msg, ok) {
+      statusMsg.textContent = msg;
+      statusMsg.className = "status show " + (ok ? "ok" : "err");
+    }
+  </script>
+</body>
+
+</html>
