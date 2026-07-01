@@ -76,16 +76,39 @@ body::after {
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  25% { background-position: 100% 0%; }
-  50% { background-position: 100% 100%; }
-  75% { background-position: 0% 100%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  25% {
+    background-position: 100% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  75% {
+    background-position: 0% 100%;
+  }
 }
 
 @keyframes floatOrb {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -40px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
 }
 
 /* ─── Layout ─── */
@@ -116,15 +139,15 @@ body::after {
 .brand-header__logo-wrap::before {
   content: '';
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
   animation: logoPulse 4s ease-in-out infinite;
 }
 
 .brand-header__logo {
-  height: 64px;
+  height: 96px;
   width: auto;
   object-fit: contain;
   position: relative;
@@ -139,11 +162,12 @@ body::after {
 
 @media (min-width: 481px) {
   .brand-header__logo {
-    height: 80px;
-  }
-  .brand-header__logo-wrap::before {
-    width: 120px;
     height: 120px;
+  }
+
+  .brand-header__logo-wrap::before {
+    width: 170px;
+    height: 170px;
   }
 }
 
@@ -167,8 +191,17 @@ body::after {
 }
 
 @keyframes logoPulse {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.15); }
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.15);
+  }
 }
 
 /* ─── Typography ─── */
@@ -332,10 +365,21 @@ textarea {
 }
 
 @keyframes starPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.25); }
-  70% { transform: scale(0.95); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.25);
+  }
+
+  70% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .rate-caption {
@@ -433,14 +477,12 @@ button.submit::before {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.1) 40%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.1) 60%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.1) 60%,
+      transparent 100%);
   transition: left 0.6s ease;
 }
 
@@ -550,21 +592,52 @@ button.submit:disabled {
 }
 
 @keyframes ringExpand {
-  0% { transform: scale(0.5); opacity: 1; }
-  100% { transform: scale(1.6); opacity: 0; }
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 @keyframes checkBounce {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.15); }
-  75% { transform: scale(0.95); }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  75% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes drawCheck {
-  0% { stroke-dasharray: 30; stroke-dashoffset: 30; opacity: 0; }
-  30% { opacity: 1; }
-  100% { stroke-dashoffset: 0; opacity: 1; }
+  0% {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
 }
 
 /* ─── Particle confetti dots ─── */
@@ -576,28 +649,88 @@ button.submit:disabled {
   animation: confettiBurst 0.9s var(--transition-smooth) both;
 }
 
-.confetti-dot:nth-child(1) { background: var(--gold); animation-delay: 0.4s; --dx: -40px; --dy: -50px; }
-.confetti-dot:nth-child(2) { background: var(--rose); animation-delay: 0.5s; --dx: 45px; --dy: -35px; }
-.confetti-dot:nth-child(3) { background: var(--good-light); animation-delay: 0.45s; --dx: -30px; --dy: 45px; }
-.confetti-dot:nth-child(4) { background: var(--gold-light); animation-delay: 0.55s; --dx: 35px; --dy: 40px; }
-.confetti-dot:nth-child(5) { background: #A3C4D9; animation-delay: 0.48s; --dx: 50px; --dy: -10px; }
-.confetti-dot:nth-child(6) { background: var(--rose); animation-delay: 0.52s; --dx: -50px; --dy: 10px; }
+.confetti-dot:nth-child(1) {
+  background: var(--gold);
+  animation-delay: 0.4s;
+  --dx: -40px;
+  --dy: -50px;
+}
+
+.confetti-dot:nth-child(2) {
+  background: var(--rose);
+  animation-delay: 0.5s;
+  --dx: 45px;
+  --dy: -35px;
+}
+
+.confetti-dot:nth-child(3) {
+  background: var(--good-light);
+  animation-delay: 0.45s;
+  --dx: -30px;
+  --dy: 45px;
+}
+
+.confetti-dot:nth-child(4) {
+  background: var(--gold-light);
+  animation-delay: 0.55s;
+  --dx: 35px;
+  --dy: 40px;
+}
+
+.confetti-dot:nth-child(5) {
+  background: #A3C4D9;
+  animation-delay: 0.48s;
+  --dx: 50px;
+  --dy: -10px;
+}
+
+.confetti-dot:nth-child(6) {
+  background: var(--rose);
+  animation-delay: 0.52s;
+  --dx: -50px;
+  --dy: 10px;
+}
 
 @keyframes confettiBurst {
-  0% { transform: translate(0, 0) scale(0); opacity: 0; }
-  40% { opacity: 1; transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6)) scale(1.2); }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6)) scale(1.2);
+  }
+
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0);
+    opacity: 0;
+  }
 }
 
 /* ─── Entrance animations ─── */
 @keyframes fadeSlideDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Form field stagger animation ─── */
@@ -644,6 +777,6 @@ button.submit:disabled {
   }
 
   .brand-header__logo {
-    height: 56px;
+    height: 80px;
   }
 }
