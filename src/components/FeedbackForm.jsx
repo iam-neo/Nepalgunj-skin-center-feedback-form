@@ -424,7 +424,7 @@ export default function FeedbackForm({ onSuccess }) {
             />
           </div>
 
-          {/* ── Suggestions textarea ── */}
+          {/* ── Suggestions textarea ──
           <div className="field field-animate" style={stagger(12)}>
             <label>6. Suggestions</label>
             <textarea
@@ -433,7 +433,7 @@ export default function FeedbackForm({ onSuccess }) {
               value={form.suggestion}
               onChange={(e) => set('suggestion', e.target.value)}
             />
-          </div>
+          </div> */}
 
           <div className="field-animate" style={stagger(13)}>
             <button
