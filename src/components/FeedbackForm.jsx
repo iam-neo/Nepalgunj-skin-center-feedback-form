@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import StarRating from './StarRating';
 import PillGroup from './PillGroup';
 
@@ -6,13 +7,46 @@ import PillGroup from './PillGroup';
 const SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbxm3GwUimL6M2rfpNh8wz0B2HYKoyY_2xDNWP672P7s84vEsc8RBPt-9Fu51l7lirhTuw/exec';
 
+const STAFF_OPTIONS = [
+  'Dr. Abhishek Arjel',
+  'Dr. Sapana Sharma',
+  'Dr. Ansu Sharma',
+  'Anjali Chaudhary',
+  'Suju Thapa',
+  'Abhilasha Basnet',
+  'Sangita Rokaya',
+];
+
+const TREATMENT_OPTIONS = [
+  'Consultation',
+  'PRP/Vampire Facial',
+  'Chemical Peel',
+  'Carbon Laser Peel',
+  'Facial',
+  'Acne Treatment',
+  'Skin Whitening',
+  'GFC Therapy',
+  'Botox',
+  'Mole Removal',
+  'Wart Removal',
+  'Birthmark Removal',
+  'Skin Tag Removal',
+  'Hair Transplant',
+  'Laser Tattoo Removal',
+  'Scar Reduction',
+  'Hydrafacial',
+  'Frakels',
+  'Allergy Treatment',
+  'HIFU',
+];
+
 const INITIAL_STATE = {
   name: '',
   address: '',
   ageSex: '',
   contact: '',
-  treatment: '',
-  treatedBy: '',
+  treatment: [],
+  treatedBy: [],
   rating: 0,
   feedbackText: '',
   satisfaction: '',
@@ -25,6 +59,147 @@ const INITIAL_STATE = {
 
 /** Inline style for staggered entrance delay */
 const stagger = (i) => ({ animationDelay: `${0.35 + i * 0.04}s` });
+
+/** Multi-select dropdown for staff/treatment selection — uses a portal so the menu
+ *  is rendered in document.body and is never clipped by any parent. */
+function MultiSelectDropdown({ value, onChange, options, placeholder = 'Select option(s)', getNewValue }) {
+  const [open, setOpen] = useState(false);
+  const [menuStyle, setMenuStyle] = useState({});
+  const triggerRef = useRef(null);
+  const menuRef = useRef(null);
+
+  // Position the portal menu under the trigger button
+  const updatePosition = () => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    setMenuStyle({
+      position: 'fixed',
+      top: rect.bottom + 6,
+      left: rect.left,
+      width: rect.width,
+      zIndex: 9999,
+    });
+  };
+
+  // Open → measure; also reposition on scroll/resize
+  useEffect(() => {
+    if (open) {
+      updatePosition();
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
+    }
+    return () => {
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [open]);
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        triggerRef.current && !triggerRef.current.contains(e.target) &&
+        menuRef.current && !menuRef.current.contains(e.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const toggle = (name) => {
+    if (getNewValue) {
+      onChange(getNewValue(value, name));
+    } else {
+      onChange(
+        value.includes(name)
+          ? value.filter((v) => v !== name)
+          : [...value, name]
+      );
+    }
+  };
+
+  const label =
+    value.length === 0
+      ? placeholder
+      : value.length === 1
+        ? value[0]
+        : `${value.length} selected`;
+
+  const menu = (
+    <ul
+      ref={menuRef}
+      className="multi-select__menu"
+      style={menuStyle}
+      role="listbox"
+      aria-multiselectable="true"
+    >
+      {options.map((name) => {
+        const selected = value.includes(name);
+        return (
+          <li
+            key={name}
+            role="option"
+            aria-selected={selected}
+            className={`multi-select__option${selected ? ' selected' : ''}`}
+            onMouseDown={(e) => { e.preventDefault(); toggle(name); }}
+          >
+            <span className="multi-select__checkbox">
+              {selected && (
+                <svg viewBox="0 0 12 10" fill="none">
+                  <polyline points="1 5 4.5 8.5 11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </span>
+            {name}
+          </li>
+        );
+      })}
+    </ul>
+  );
+
+  return (
+    <div className="multi-select">
+      <button
+        ref={triggerRef}
+        type="button"
+        id="field-treatedBy"
+        className={`multi-select__trigger${open ? ' open' : ''}${value.length > 0 ? ' has-value' : ''}`}
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span className="multi-select__label">{label}</span>
+        <svg className="multi-select__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      {open && createPortal(menu, document.body)}
+
+      {/* Selected tags */}
+      {value.length > 0 && (
+        <div className="multi-select__tags">
+          {value.map((v) => (
+            <span key={v} className="multi-select__tag">
+              {v}
+              <button
+                type="button"
+                className="multi-select__tag-remove"
+                onClick={() => toggle(v)}
+                aria-label={`Remove ${v}`}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export default function FeedbackForm({ onSuccess }) {
   const [form, setForm] = useState(INITIAL_STATE);
@@ -58,8 +233,8 @@ export default function FeedbackForm({ onSuccess }) {
       address: form.address.trim(),
       ageSex: form.ageSex.trim(),
       contact: form.contact.trim(),
-      treatment: form.treatment.trim(),
-      treatedBy: form.treatedBy.trim(),
+      treatment: form.treatment.join(', '),
+      treatedBy: form.treatedBy.join(', '),
       rating: form.rating,
       feedbackText: form.feedbackText.trim(),
       satisfaction: form.satisfaction,
@@ -142,26 +317,37 @@ export default function FeedbackForm({ onSuccess }) {
             </div>
           </div>
 
-          <div className="row2 field-animate" style={stagger(3)}>
-            <div className="field">
-              <label>Treatment done</label>
-              <input
-                type="text"
-                id="field-treatment"
-                value={form.treatment}
-                onChange={(e) => set('treatment', e.target.value)}
-              />
-            </div>
-            <div className="field">
-              <label>Treatment done by</label>
-              <input
-                type="text"
-                id="field-treatedBy"
-                value={form.treatedBy}
-                onChange={(e) => set('treatedBy', e.target.value)}
-              />
-            </div>
+          <div className="field field-animate" style={stagger(3)}>
+            <label>Treatment done</label>
+            <MultiSelectDropdown
+              options={TREATMENT_OPTIONS}
+              placeholder="Select treatment(s)"
+              value={form.treatment}
+              onChange={(val) => set('treatment', val)}
+              getNewValue={(current, name) => {
+                // Deselect
+                if (current.includes(name)) return current.filter(v => v !== name);
+                // Selecting Consultation: add it alongside any existing single treatment
+                if (name === 'Consultation') return ['Consultation', ...current.filter(v => v !== 'Consultation')];
+                // Selecting a non-Consultation treatment while Consultation is active:
+                // keep Consultation, replace any other non-Consultation selection
+                if (current.includes('Consultation')) return ['Consultation', name];
+                // No Consultation: single-select — replace whatever is selected
+                return [name];
+              }}
+            />
           </div>
+
+          <div className="field field-animate" style={stagger(3.5)}>
+            <label>Treatment done by</label>
+            <MultiSelectDropdown
+              options={STAFF_OPTIONS}
+              placeholder="Select staff member(s)"
+              value={form.treatedBy}
+              onChange={(val) => set('treatedBy', val)}
+            />
+          </div>
+
 
           <hr className="divider" />
 
